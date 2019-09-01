@@ -4,10 +4,10 @@
 The data set was provided by an international vertically integrated cement/concrete producer (VIP) from across a range of different concrete production sites and consisted of 9994 measured compressive strengths from job-site mixtures that were sampled across various locations in the United States. Three samples corresponding to a given mixture was collected at the job-site (i.e., in the form of 6″×12″ cylinders) and cured following ASTM C39 for 28 days after which time their compressive strengths were measured. 
 
 The data set contained mixture proportions in terms of: 
-1. w/c, cement and fly ash contents (in kg per m3 of concrete), 
-2. water-reducing admixture (WRA) and air-entraining admixture contents (in kg per 100 kg of cementitious material), 
-3. coarse and fine aggregate contents (in kg per m3 of concrete), and 
-4. fresh air content (in volume %) for each mixture. 
+1. w/c, cement and fly ash contents (in kg per m3 of concrete)
+2. water-reducing admixture (WRA) and air-entraining admixture contents (in kg per 100 kg of cementitious material) 
+3. coarse and fine aggregate contents (in kg per m3 of concrete)
+4. fresh air content (in volume %) for each mixture
 5. the strength that was targeted (target) 
 6. the strength that was actually measured (output)
 
