@@ -23,6 +23,12 @@ The goal is to use machine learning algorithms (SVM, linear regression, LASSO, r
 1. the propensity for a concrete to be below target (poor strength) based on the knowledge of the concrete mixture design (inputs) and 
 2. the level of overdesign (ratio of real strength divided by target strength). Concretes below target are also those with a level of overdosing lower than 1.
 
+## Breakdown:
+
+1. Data Exploration 
+2. Outlier Detection and Removal 
+3. Model Fitting 
+
 
 
 
