@@ -2,29 +2,66 @@
 title: "Data_exploration"
 author: "Huizi Yu"
 date: "9/1/2019"
-output: pdf_document
+output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Loading Concrete Data into workplace
+```{r}
+setwd("~/Concrete_overdesign_PARIS")
+library(glmnet)
+library(randomForest)
+library(caret)
+library(abodOutlier)
+library(standardize)
+library(OutliersO3)
+library(OutlierDetection)
+library(neuralnet)
+library(HighDimOut)
+library(caret)
+library(tree)
+library(gbm)
+library(xgboost)
+library(knitr)
+concrete <- read.csv("Clean_data.csv")
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+## Randomly selecting one training set (80 %) and one testing set (20 %)
+```{r}
+set.seed(1234567+5*1000)
+input <- concrete[,1:8]
+input2 <- scale(input)
+complete <- cbind(input2, concrete$overdesign)
+concrete2 <- as.data.frame(complete) 
+colnames(concrete2) <- c("coarse_agg_weight", "fine_agg_weight", "current_weight", "fly_ash_weight", "AEA_dose", "type_awra_dose", "weight_ratio", "target", "overdesign")
+samp<-sample(1:nrow(concrete2),nrow(concrete2)*0.8,replace = F)
+train <-concrete2[samp,]
+test <- concrete2[-samp,]
+mu <- mean(test$overdesign)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Removing non-important variables? 
+```{r}
+tree_1 <- randomForest(y = concrete2$overdesign , x = concrete2[,1:8])
+importance(tree_1, type = 2) 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Random Forest picked coarse_agg_weight, fine_agg_weight, current_weight, fly_ash_weight, AEA_dose, type_awra_dose, W..C.P. all proved to be above 45, shows that we don't need to remove any variables
+
+# Setting the benchmark before removing any outliers
+   - Methods 
+      + Linear Regression 
+      + LASSO 
+      + Random Forest 
+      + NeuralNetwork 
+      + XGboost
+
+$$R^2 = 1-\sum_{n=1}(y-\hat{y})^2/\sum_{n=1}(y-\bar{y})^2$$
+
+
+## Linear Regression 
+```{r}
+y = train$overdesign ~ train$coarse_agg_weight + train$fine_agg_weight + train$current_weight + train$fly_ash_weight + train$AEA_dose + train$type_awra_dose + train$weight_ratio + train$target
+linear <- lm(y)
+Rsquared_linear <- summary(linear)$r.squared
+if (Rsquared_linear == 0) {Rsquared_linear = 0}
+Rsquared_linear
+```
